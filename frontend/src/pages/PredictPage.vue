@@ -209,7 +209,7 @@
 							style="
 								height: 100%;
 								min-height: 300px;
-								border: 2px dashed #ccc;
+								border: 2px dashed #999999;
 								border-radius: 16px;
 							"
 						>

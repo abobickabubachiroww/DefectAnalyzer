@@ -327,8 +327,8 @@ const maintenanceGroups = ref(null)
 const productionGroups = ref(null)
 const riskGroups = ref(null)
 
-const colorLow = getCssVar('positive') || '#16a34a'
-const colorHigh = getCssVar('negative') || '#dc2626'
+const colorLow = getCssVar('positive')
+const colorHigh = getCssVar('negative')
 
 onMounted(async () => {
 	try {
@@ -530,7 +530,11 @@ const riskGroupsOption = computed(() => {
 		xAxis: {
 			type: 'category',
 			data: labels,
-			axisLabel: { interval: 0, fontSize: 11, lineHeight: 16, color: '#555' },
+			axisLabel: {
+				interval: 0,
+				fontSize: 11,
+				lineHeight: 16,
+			},
 		},
 		yAxis: { type: 'value', name: 'Кол-во деталей' },
 		series: [

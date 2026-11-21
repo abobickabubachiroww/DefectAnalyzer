@@ -445,7 +445,7 @@ const pieOption = computed(() => {
 			{
 				type: 'pie',
 				radius: ['50%', '70%'],
-				itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+				itemStyle: { borderRadius: 8, borderColor: '#ffffff', borderWidth: 2 },
 				data: [
 					{
 						value: dashboardData.value.class_distribution?.low || 0,
