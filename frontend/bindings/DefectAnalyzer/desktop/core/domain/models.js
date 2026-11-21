@@ -166,6 +166,132 @@ export class DashboardStats {
     }
 }
 
+export class EconomicsRequest {
+    /**
+     * Creates a new EconomicsRequest instance.
+     * @param {Partial<EconomicsRequest>} [$$source = {}] - The source object to create the EconomicsRequest.
+     */
+    constructor($$source = {}) {
+        if (!("downtime_hours_per_month" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["downtime_hours_per_month"] = 0;
+        }
+        if (!("cost_per_downtime_hour" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["cost_per_downtime_hour"] = 0;
+        }
+        if (!("expected_reduction_percent" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["expected_reduction_percent"] = 0;
+        }
+        if (!("implementation_cost" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["implementation_cost"] = 0;
+        }
+        if (!("monthly_operating_cost" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["monthly_operating_cost"] = 0;
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new EconomicsRequest instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {EconomicsRequest}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new EconomicsRequest(/** @type {Partial<EconomicsRequest>} */($$parsedSource));
+    }
+}
+
+export class EconomicsResponse {
+    /**
+     * Creates a new EconomicsResponse instance.
+     * @param {Partial<EconomicsResponse>} [$$source = {}] - The source object to create the EconomicsResponse.
+     */
+    constructor($$source = {}) {
+        if (!("gross_monthly_savings" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["gross_monthly_savings"] = 0;
+        }
+        if (!("net_monthly_savings" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["net_monthly_savings"] = 0;
+        }
+        if (!("payback_months" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["payback_months"] = 0;
+        }
+        if (!("first_year_net_benefit" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["first_year_net_benefit"] = 0;
+        }
+        if (!("currency" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["currency"] = "";
+        }
+        if (!("scenario" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["scenario"] = "";
+        }
+        if (!("note" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["note"] = "";
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new EconomicsResponse instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {EconomicsResponse}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new EconomicsResponse(/** @type {Partial<EconomicsResponse>} */($$parsedSource));
+    }
+}
+
 export class Feature {
     /**
      * Creates a new Feature instance.
@@ -318,8 +444,100 @@ export class FeaturesResponse {
     }
 }
 
+export class GeneralRecommendation {
+    /**
+     * Creates a new GeneralRecommendation instance.
+     * @param {Partial<GeneralRecommendation>} [$$source = {}] - The source object to create the GeneralRecommendation.
+     */
+    constructor($$source = {}) {
+        if (!("id" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["id"] = "";
+        }
+        if (!("title" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["title"] = "";
+        }
+        if (!("basis" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["basis"] = "";
+        }
+        if (!("actions" in $$source)) {
+            /**
+             * @member
+             * @type {string[]}
+             */
+            this["actions"] = [];
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new GeneralRecommendation instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {GeneralRecommendation}
+     */
+    static createFrom($$source = {}) {
+        const $$createField3_0 = $$createType9;
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        if ("actions" in $$parsedSource) {
+            $$parsedSource["actions"] = $$createField3_0($$parsedSource["actions"]);
+        }
+        return new GeneralRecommendation(/** @type {Partial<GeneralRecommendation>} */($$parsedSource));
+    }
+}
+
+export class GeneralRecommendationsResponse {
+    /**
+     * Creates a new GeneralRecommendationsResponse instance.
+     * @param {Partial<GeneralRecommendationsResponse>} [$$source = {}] - The source object to create the GeneralRecommendationsResponse.
+     */
+    constructor($$source = {}) {
+        if (!("recommendations" in $$source)) {
+            /**
+             * @member
+             * @type {GeneralRecommendation[]}
+             */
+            this["recommendations"] = [];
+        }
+        if (!("disclaimer" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["disclaimer"] = "";
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new GeneralRecommendationsResponse instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {GeneralRecommendationsResponse}
+     */
+    static createFrom($$source = {}) {
+        const $$createField0_0 = $$createType11;
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        if ("recommendations" in $$parsedSource) {
+            $$parsedSource["recommendations"] = $$createField0_0($$parsedSource["recommendations"]);
+        }
+        return new GeneralRecommendationsResponse(/** @type {Partial<GeneralRecommendationsResponse>} */($$parsedSource));
+    }
+}
+
 /**
- * Универсальная структура для групп (используется везде)
+ * Структура для групп
  */
 export class GroupStats {
     /**
@@ -412,8 +630,8 @@ export class MaintenanceGroups {
      * @returns {MaintenanceGroups}
      */
     static createFrom($$source = {}) {
-        const $$createField1_0 = $$createType9;
-        const $$createField2_0 = $$createType9;
+        const $$createField1_0 = $$createType12;
+        const $$createField2_0 = $$createType12;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("below_threshold" in $$parsedSource) {
             $$parsedSource["below_threshold"] = $$createField1_0($$parsedSource["below_threshold"]);
@@ -497,8 +715,8 @@ export class ModelMetrics {
      * @returns {ModelMetrics}
      */
     static createFrom($$source = {}) {
-        const $$createField4_0 = $$createType10;
-        const $$createField5_0 = $$createType11;
+        const $$createField4_0 = $$createType13;
+        const $$createField5_0 = $$createType14;
         const $$createField6_0 = $$createType0;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("metrics" in $$parsedSource) {
@@ -577,6 +795,322 @@ export class ModelMetricsData {
     }
 }
 
+export class PersonalizedRecommendation {
+    /**
+     * Creates a new PersonalizedRecommendation instance.
+     * @param {Partial<PersonalizedRecommendation>} [$$source = {}] - The source object to create the PersonalizedRecommendation.
+     */
+    constructor($$source = {}) {
+        if (!("feature" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["feature"] = "";
+        }
+        if (!("value" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["value"] = 0;
+        }
+        if (!("shap_value" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["shap_value"] = 0;
+        }
+        if (!("priority" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["priority"] = "";
+        }
+        if (!("title" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["title"] = "";
+        }
+        if (!("description" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["description"] = "";
+        }
+        if (!("actions" in $$source)) {
+            /**
+             * @member
+             * @type {string[]}
+             */
+            this["actions"] = [];
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new PersonalizedRecommendation instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {PersonalizedRecommendation}
+     */
+    static createFrom($$source = {}) {
+        const $$createField6_0 = $$createType9;
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        if ("actions" in $$parsedSource) {
+            $$parsedSource["actions"] = $$createField6_0($$parsedSource["actions"]);
+        }
+        return new PersonalizedRecommendation(/** @type {Partial<PersonalizedRecommendation>} */($$parsedSource));
+    }
+}
+
+export class PersonalizedRecommendationsResponse {
+    /**
+     * Creates a new PersonalizedRecommendationsResponse instance.
+     * @param {Partial<PersonalizedRecommendationsResponse>} [$$source = {}] - The source object to create the PersonalizedRecommendationsResponse.
+     */
+    constructor($$source = {}) {
+        if (!("predicted_class" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["predicted_class"] = 0;
+        }
+        if (!("label" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["label"] = "";
+        }
+        if (!("score" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["score"] = 0;
+        }
+        if (!("recommendations" in $$source)) {
+            /**
+             * @member
+             * @type {PersonalizedRecommendation[]}
+             */
+            this["recommendations"] = [];
+        }
+        if (!("disclaimer" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["disclaimer"] = "";
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new PersonalizedRecommendationsResponse instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {PersonalizedRecommendationsResponse}
+     */
+    static createFrom($$source = {}) {
+        const $$createField3_0 = $$createType16;
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        if ("recommendations" in $$parsedSource) {
+            $$parsedSource["recommendations"] = $$createField3_0($$parsedSource["recommendations"]);
+        }
+        return new PersonalizedRecommendationsResponse(/** @type {Partial<PersonalizedRecommendationsResponse>} */($$parsedSource));
+    }
+}
+
+export class PredictRequest {
+    /**
+     * Creates a new PredictRequest instance.
+     * @param {Partial<PredictRequest>} [$$source = {}] - The source object to create the PredictRequest.
+     */
+    constructor($$source = {}) {
+        if (!("ProductionVolume" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["ProductionVolume"] = 0;
+        }
+        if (!("ProductionCost" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["ProductionCost"] = 0;
+        }
+        if (!("SupplierQuality" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["SupplierQuality"] = 0;
+        }
+        if (!("DeliveryDelay" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["DeliveryDelay"] = 0;
+        }
+        if (!("MaintenanceHours" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["MaintenanceHours"] = 0;
+        }
+        if (!("DowntimePercentage" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["DowntimePercentage"] = 0;
+        }
+        if (!("InventoryTurnover" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["InventoryTurnover"] = 0;
+        }
+        if (!("StockoutRate" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["StockoutRate"] = 0;
+        }
+        if (!("WorkerProductivity" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["WorkerProductivity"] = 0;
+        }
+        if (!("SafetyIncidents" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["SafetyIncidents"] = 0;
+        }
+        if (!("EnergyConsumption" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["EnergyConsumption"] = 0;
+        }
+        if (!("EnergyEfficiency" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["EnergyEfficiency"] = 0;
+        }
+        if (!("AdditiveProcessTime" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["AdditiveProcessTime"] = 0;
+        }
+        if (!("AdditiveMaterialCost" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["AdditiveMaterialCost"] = 0;
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new PredictRequest instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {PredictRequest}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new PredictRequest(/** @type {Partial<PredictRequest>} */($$parsedSource));
+    }
+}
+
+export class PredictResponse {
+    /**
+     * Creates a new PredictResponse instance.
+     * @param {Partial<PredictResponse>} [$$source = {}] - The source object to create the PredictResponse.
+     */
+    constructor($$source = {}) {
+        if (!("predicted_class" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["predicted_class"] = 0;
+        }
+        if (!("label" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["label"] = "";
+        }
+        if (!("score" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["score"] = 0;
+        }
+        if (!("threshold" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["threshold"] = 0;
+        }
+        if (!("model" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["model"] = "";
+        }
+        if (!("note" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["note"] = "";
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new PredictResponse instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {PredictResponse}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new PredictResponse(/** @type {Partial<PredictResponse>} */($$parsedSource));
+    }
+}
+
 /**
  * Группы по объему производства
  */
@@ -619,8 +1153,8 @@ export class ProductionGroups {
      * @returns {ProductionGroups}
      */
     static createFrom($$source = {}) {
-        const $$createField1_0 = $$createType9;
-        const $$createField2_0 = $$createType9;
+        const $$createField1_0 = $$createType12;
+        const $$createField2_0 = $$createType12;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("below_threshold" in $$parsedSource) {
             $$parsedSource["below_threshold"] = $$createField1_0($$parsedSource["below_threshold"]);
@@ -732,8 +1266,8 @@ export class RiskGroups {
      * @returns {RiskGroups}
      */
     static createFrom($$source = {}) {
-        const $$createField0_0 = $$createType12;
-        const $$createField1_0 = $$createType14;
+        const $$createField0_0 = $$createType17;
+        const $$createField1_0 = $$createType19;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("thresholds" in $$parsedSource) {
             $$parsedSource["thresholds"] = $$createField0_0($$parsedSource["thresholds"]);
@@ -793,9 +1327,14 @@ const $$createType5 = ClassCount.createFrom;
 const $$createType6 = $Create.Array($$createType5);
 const $$createType7 = Feature.createFrom;
 const $$createType8 = $Create.Array($$createType7);
-const $$createType9 = GroupStats.createFrom;
-const $$createType10 = ModelMetricsData.createFrom;
-const $$createType11 = $Create.Array($$createType0);
-const $$createType12 = RiskThresholds.createFrom;
-const $$createType13 = RiskGroupItem.createFrom;
-const $$createType14 = $Create.Array($$createType13);
+const $$createType9 = $Create.Array($Create.Any);
+const $$createType10 = GeneralRecommendation.createFrom;
+const $$createType11 = $Create.Array($$createType10);
+const $$createType12 = GroupStats.createFrom;
+const $$createType13 = ModelMetricsData.createFrom;
+const $$createType14 = $Create.Array($$createType0);
+const $$createType15 = PersonalizedRecommendation.createFrom;
+const $$createType16 = $Create.Array($$createType15);
+const $$createType17 = RiskThresholds.createFrom;
+const $$createType18 = RiskGroupItem.createFrom;
+const $$createType19 = $Create.Array($$createType18);

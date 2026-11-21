@@ -1,266 +1,287 @@
 <template>
 	<q-page class="row bg-grey-2">
-		<!-- 👇 Весь контент обернут в скролл-зону, которая занимает все свободное место (класс col) -->
-		<q-scroll-area class="col q-pa-md">
-			<div v-if="isLoading" class="flex flex-center" style="height: 50vh">
-				<q-spinner-dots color="primary" size="4em" />
-				<div class="text-h6 q-ml-md">Загрузка данных...</div>
-			</div>
-
-			<div v-else-if="featuresList">
-				<!-- БЛОК 1: Распределение показателя -->
-				<q-card style="border-radius: 12px" class="q-mb-md">
-					<q-card-section class="row items-center q-col-gutter-md">
-						<div class="col-12 col-md-6">
-							<div class="text-h6 text-weight-bold text-grey-9">
-								Распределение показателя
-							</div>
-						</div>
-						<div class="col-12 col-md-6">
-							<q-select
-								v-model="selectedFeature"
-								:options="featuresList"
-								option-label="label"
-								option-value="name"
-								emit-value
-								map-options
-								outlined
-								dense
-								label="Выберите показатель"
-								@update:model-value="fetchDistribution"
-								popup-content-class="bg-white text-dark"
-							>
-								<template v-slot:option="scope">
-									<q-item v-bind="scope.itemProps" class="text-dark">
-										<q-item-section>
-											<q-item-label class="text-weight-medium">{{
-												scope.opt.label
-											}}</q-item-label>
-											<q-item-label caption class="text-grey-7">{{
-												scope.opt.unit
-											}}</q-item-label>
-										</q-item-section>
-									</q-item>
-								</template>
-							</q-select>
-						</div>
-					</q-card-section>
-					<q-card-section class="q-pt-none">
-						<div
-							v-if="isDistributionLoading"
-							class="flex flex-center"
-							style="height: 250px"
-						>
-							<q-spinner color="primary" size="2em" />
-						</div>
-						<v-chart
-							v-else-if="distributionData"
-							style="height: 250px; width: 100%"
-							:option="distributionOption"
-							autoresize
-						/>
-					</q-card-section>
-				</q-card>
-
-				<!-- БЛОК 2: Время обслуживания -->
-				<div v-if="maintenanceGroups" class="q-mb-md">
-					<div class="text-h6 text-weight-bold text-grey-9 q-mb-sm">
-						Время обслуживания
-					</div>
-					<div class="row q-col-gutter-md">
-						<div class="col-12 col-md-3">
-							<q-card
-								class="bg-white text-dark full-width flex flex-center"
-								style="
-									border-radius: 12px;
-									border-left: 4px solid var(--q-positive);
-								"
-							>
-								<div class="q-pa-sm text-center">
-									<div class="text-caption text-grey-7">
-										Меньше {{ maintenanceGroups.threshold_hours_per_week }} ч
-									</div>
-									<div class="text-h5 text-weight-bold q-mt-xs">
-										{{ maintenanceGroups.below_threshold.total }}
-									</div>
-									<div
-										class="text-negative text-weight-bold q-mt-xs text-caption"
-									>
-										Брак:
-										{{
-											(
-												maintenanceGroups.below_threshold.high_defect_share *
-												100
-											).toFixed(1)
-										}}%
-									</div>
-								</div>
-							</q-card>
-						</div>
-						<div class="col-12 col-md-3">
-							<q-card
-								class="bg-white text-dark full-width flex flex-center"
-								style="
-									border-radius: 12px;
-									border-left: 4px solid var(--q-accent);
-								"
-							>
-								<div class="q-pa-sm text-center">
-									<div class="text-caption text-grey-7">
-										От {{ maintenanceGroups.threshold_hours_per_week }} ч и выше
-									</div>
-									<div class="text-h5 text-weight-bold q-mt-xs">
-										{{ maintenanceGroups.at_or_above_threshold.total }}
-									</div>
-									<div
-										class="text-negative text-weight-bold q-mt-xs text-caption"
-									>
-										Брак:
-										{{
-											(
-												maintenanceGroups.at_or_above_threshold
-													.high_defect_share * 100
-											).toFixed(1)
-										}}%
-									</div>
-								</div>
-							</q-card>
-						</div>
-						<div class="col-12 col-md-6" style="min-width: 0">
-							<q-card
-								style="border-radius: 12px; height: 100%; overflow: hidden"
-							>
-								<v-chart
-									style="height: 200px; width: 100%"
-									:option="maintenanceGroupsOption"
-									autoresize
-								/>
-							</q-card>
-						</div>
-					</div>
+		<q-scroll-area class="col" style="overflow-x: hidden">
+			<div class="q-px-lg q-pb-lg q-pt-md">
+				<div v-if="isLoading" class="flex flex-center" style="height: 50vh">
+					<q-spinner-dots color="primary" size="4em" />
+					<div class="text-h6 q-ml-md">Загрузка данных...</div>
 				</div>
 
-				<!-- БЛОК 3: Объём производства -->
-				<div v-if="productionGroups" class="q-mb-md">
-					<div class="text-h6 text-weight-bold text-grey-9 q-mb-sm">
-						Объём производства
-					</div>
-					<div class="row q-col-gutter-md">
-						<div class="col-12 col-md-3">
-							<q-card
-								class="bg-white text-dark full-width flex flex-center"
-								style="
-									border-radius: 12px;
-									border-left: 4px solid var(--q-positive);
-								"
-							>
-								<div class="q-pa-sm text-center">
-									<div class="text-caption text-grey-7">
-										Меньше {{ productionGroups.threshold_units_per_day }} ед
-									</div>
-									<div class="text-h5 text-weight-bold q-mt-xs">
-										{{ productionGroups.below_threshold.total }}
-									</div>
-									<div
-										class="text-negative text-weight-bold q-mt-xs text-caption"
-									>
-										Брак:
-										{{
-											(
-												productionGroups.below_threshold.high_defect_share * 100
-											).toFixed(1)
-										}}%
-									</div>
-								</div>
-							</q-card>
-						</div>
-						<div class="col-12 col-md-3">
-							<q-card
-								class="bg-white text-dark full-width flex flex-center"
-								style="
-									border-radius: 12px;
-									border-left: 4px solid var(--q-accent);
-								"
-							>
-								<div class="q-pa-sm text-center">
-									<div class="text-caption text-grey-7">
-										От {{ productionGroups.threshold_units_per_day }} ед и выше
-									</div>
-									<div class="text-h5 text-weight-bold q-mt-xs">
-										{{ productionGroups.at_or_above_threshold.total }}
-									</div>
-									<div
-										class="text-negative text-weight-bold q-mt-xs text-caption"
-									>
-										Брак:
-										{{
-											(
-												productionGroups.at_or_above_threshold
-													.high_defect_share * 100
-											).toFixed(1)
-										}}%
-									</div>
-								</div>
-							</q-card>
-						</div>
-						<div class="col-12 col-md-6" style="min-width: 0">
-							<q-card
-								style="border-radius: 12px; height: 100%; overflow: hidden"
-							>
-								<v-chart
-									style="height: 200px; width: 100%"
-									:option="productionGroupsOption"
-									autoresize
-								/>
-							</q-card>
-						</div>
-					</div>
-				</div>
-
-				<!-- БЛОК 4: Совместный риск -->
-				<div v-if="riskGroups" class="q-mb-md">
-					<div
-						class="text-h6 text-weight-bold text-grey-9 q-mb-sm flex items-center"
+				<div v-else-if="featuresList">
+					<!-- Распределение показателя -->
+					<q-card
+						style="
+							border-radius: 16px;
+							box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+						"
+						class="q-mb-lg"
 					>
-						Совместный риск
-						<q-icon
-							name="help_outline"
-							size="sm"
-							class="q-ml-sm text-grey-6 cursor-pointer"
-						>
-							<q-menu>
-								<div
-									class="q-pa-md text-body2 bg-white text-black shadow-2"
-									style="max-width: 250px"
-								>
-									{{ riskGroups.note }}
+						<q-card-section class="row items-center q-col-gutter-md">
+							<div class="col-12 col-md-6">
+								<div class="text-h6 text-weight-bold text-grey-9">
+									Распределение показателя
 								</div>
-							</q-menu>
-						</q-icon>
-					</div>
-					<div class="row q-col-gutter-md">
-						<div class="col-12" style="min-width: 0">
-							<q-card style="border-radius: 12px; overflow: hidden">
-								<q-card-section>
-									<div class="text-caption text-grey-7 q-mb-sm">
-										Пороги: Обслуживание &ge;
-										{{ riskGroups.thresholds.maintenance_hours_per_week }} ч и
-										Объем &ge;
-										{{ riskGroups.thresholds.production_units_per_day }} ед
+							</div>
+							<div class="col-12 col-md-6">
+								<q-select
+									v-model="selectedFeature"
+									:options="featuresList"
+									option-label="label"
+									option-value="name"
+									emit-value
+									map-options
+									outlined
+									dense
+									label="Выберите показатель"
+									@update:model-value="fetchDistribution"
+									popup-content-class="bg-white text-dark"
+								>
+									<template v-slot:option="scope">
+										<q-item v-bind="scope.itemProps" class="text-dark">
+											<q-item-section>
+												<q-item-label class="text-weight-medium">{{
+													scope.opt.label
+												}}</q-item-label>
+												<q-item-label caption class="text-grey-7">{{
+													scope.opt.unit
+												}}</q-item-label>
+											</q-item-section>
+										</q-item>
+									</template>
+								</q-select>
+							</div>
+						</q-card-section>
+						<q-card-section class="q-pt-none">
+							<div
+								v-if="isDistributionLoading"
+								class="flex flex-center"
+								style="height: 300px"
+							>
+								<q-spinner color="primary" size="2em" />
+							</div>
+							<v-chart
+								v-else-if="distributionData"
+								style="height: 300px; width: 100%"
+								:option="distributionOption"
+								autoresize
+							/>
+						</q-card-section>
+					</q-card>
+
+					<!-- Время обслуживания -->
+					<div v-if="maintenanceGroups" class="q-mb-lg">
+						<div class="text-h6 text-weight-bold text-grey-9 q-mb-md">
+							Время обслуживания
+						</div>
+						<div class="row q-col-gutter-lg">
+							<div class="col-12 col-md-3">
+								<q-card
+									class="bg-white text-dark full-width flex flex-center"
+									style="
+										border-radius: 16px;
+										border-left: 5px solid var(--q-positive);
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<div class="q-pa-md text-center">
+										<div class="text-subtitle2 text-grey-7">
+											Меньше {{ maintenanceGroups.threshold_hours_per_week }} ч
+										</div>
+										<div class="text-h3 text-weight-bold q-mt-sm">
+											{{ maintenanceGroups.below_threshold.total }}
+										</div>
+										<div class="text-negative text-weight-bold q-mt-sm">
+											Брак:
+											{{
+												(
+													maintenanceGroups.below_threshold.high_defect_share *
+													100
+												).toFixed(1)
+											}}%
+										</div>
 									</div>
+								</q-card>
+							</div>
+							<div class="col-12 col-md-3">
+								<q-card
+									class="bg-white text-dark full-width flex flex-center"
+									style="
+										border-radius: 16px;
+										border-left: 5px solid var(--q-accent);
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<div class="q-pa-md text-center">
+										<div class="text-subtitle2 text-grey-7">
+											От {{ maintenanceGroups.threshold_hours_per_week }} ч и
+											выше
+										</div>
+										<div class="text-h3 text-weight-bold q-mt-sm">
+											{{ maintenanceGroups.at_or_above_threshold.total }}
+										</div>
+										<div class="text-negative text-weight-bold q-mt-sm">
+											Брак:
+											{{
+												(
+													maintenanceGroups.at_or_above_threshold
+														.high_defect_share * 100
+												).toFixed(1)
+											}}%
+										</div>
+									</div>
+								</q-card>
+							</div>
+							<div class="col-12 col-md-6" style="min-width: 0">
+								<q-card
+									style="
+										border-radius: 16px;
+										height: 100%;
+										overflow: hidden;
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
 									<v-chart
-										style="height: 300px; width: 100%"
-										:option="riskGroupsOption"
+										style="height: 250px; width: 100%"
+										:option="maintenanceGroupsOption"
 										autoresize
 									/>
-								</q-card-section>
-							</q-card>
+								</q-card>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Отступ снизу, чтобы последний блок не прилипал к краю экрана -->
-				<div style="height: 30px"></div>
+					<!--  3: Объём производства -->
+					<div v-if="productionGroups" class="q-mb-lg">
+						<div class="text-h6 text-weight-bold text-grey-9 q-mb-md">
+							Объём производства
+						</div>
+						<div class="row q-col-gutter-lg">
+							<div class="col-12 col-md-3">
+								<q-card
+									class="bg-white text-dark full-width flex flex-center"
+									style="
+										border-radius: 16px;
+										border-left: 5px solid var(--q-positive);
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<div class="q-pa-md text-center">
+										<div class="text-subtitle2 text-grey-7">
+											Меньше {{ productionGroups.threshold_units_per_day }} ед
+										</div>
+										<div class="text-h3 text-weight-bold q-mt-sm">
+											{{ productionGroups.below_threshold.total }}
+										</div>
+										<div class="text-negative text-weight-bold q-mt-sm">
+											Брак:
+											{{
+												(
+													productionGroups.below_threshold.high_defect_share *
+													100
+												).toFixed(1)
+											}}%
+										</div>
+									</div>
+								</q-card>
+							</div>
+							<div class="col-12 col-md-3">
+								<q-card
+									class="bg-white text-dark full-width flex flex-center"
+									style="
+										border-radius: 16px;
+										border-left: 5px solid var(--q-accent);
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<div class="q-pa-md text-center">
+										<div class="text-subtitle2 text-grey-7">
+											От {{ productionGroups.threshold_units_per_day }} ед и
+											выше
+										</div>
+										<div class="text-h3 text-weight-bold q-mt-sm">
+											{{ productionGroups.at_or_above_threshold.total }}
+										</div>
+										<div class="text-negative text-weight-bold q-mt-sm">
+											Брак:
+											{{
+												(
+													productionGroups.at_or_above_threshold
+														.high_defect_share * 100
+												).toFixed(1)
+											}}%
+										</div>
+									</div>
+								</q-card>
+							</div>
+							<div class="col-12 col-md-6" style="min-width: 0">
+								<q-card
+									style="
+										border-radius: 16px;
+										height: 100%;
+										overflow: hidden;
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<v-chart
+										style="height: 250px; width: 100%"
+										:option="productionGroupsOption"
+										autoresize
+									/>
+								</q-card>
+							</div>
+						</div>
+					</div>
+
+					<!-- Совместный риск -->
+					<div v-if="riskGroups" class="q-mb-lg">
+						<div
+							class="text-h6 text-weight-bold text-grey-9 q-mb-md flex items-center"
+						>
+							Совместный риск
+							<q-icon
+								name="help_outline"
+								size="sm"
+								class="q-ml-sm text-grey-6 cursor-pointer"
+							>
+								<q-menu>
+									<div
+										class="q-pa-md text-body2 bg-white text-black shadow-2"
+										style="max-width: 250px"
+									>
+										{{ riskGroups.note }}
+									</div>
+								</q-menu>
+							</q-icon>
+						</div>
+						<div class="row q-col-gutter-md">
+							<div class="col-12" style="min-width: 0">
+								<q-card
+									style="
+										border-radius: 16px;
+										overflow: hidden;
+										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+									"
+								>
+									<q-card-section class="q-pa-md">
+										<div class="text-subtitle2 text-grey-7 q-mb-sm">
+											Пороги: Обслуживание &ge;
+											{{ riskGroups.thresholds.maintenance_hours_per_week }} ч и
+											Объем &ge;
+											{{ riskGroups.thresholds.production_units_per_day }} ед
+										</div>
+										<v-chart
+											style="height: 350px; width: 100%"
+											:option="riskGroupsOption"
+											autoresize
+										/>
+									</q-card-section>
+								</q-card>
+							</div>
+						</div>
+					</div>
+
+					<div style="height: 30px"></div>
+				</div>
 			</div>
 		</q-scroll-area>
 	</q-page>
@@ -349,30 +370,36 @@ const fetchDistribution = async () => {
 	}
 }
 
-// --- НАСТРОЙКИ ГРАФИКОВ ---
+//  НАСТРОЙКИ ГРАФИКОВ
 
 const distributionOption = computed(() => {
 	if (!distributionData.value) return {}
+
 	const data = distributionData.value
 	const labels = []
 	for (let i = 0; i < data.bin_edges.length - 1; i++) {
 		labels.push(`${data.bin_edges[i]} - ${data.bin_edges[i + 1]}`)
 	}
+
 	const lowCounts = data.series.find(s => s.class === 0)?.counts || []
 	const highCounts = data.series.find(s => s.class === 1)?.counts || []
 
 	return {
 		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
 		legend: { bottom: '0%', left: 'center' },
-		grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+		grid: { left: '3%', right: '4%', bottom: '25%', containLabel: true },
 		xAxis: {
 			type: 'category',
 			data: labels,
 			name: data.unit,
 			nameLocation: 'middle',
-			nameGap: 30,
+			nameGap: 35,
 		},
-		yAxis: { type: 'value', name: 'Кол-во деталей' },
+		yAxis: {
+			type: 'value',
+			name: 'Кол-во',
+			nameTextStyle: { padding: [0, 0, 0, -20] }, // Чуть сдвигаем название оси Y, чтобы не обрезалось
+		},
 		series: [
 			{
 				name: 'Low (Норма)',

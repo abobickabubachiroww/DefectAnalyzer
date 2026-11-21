@@ -25,7 +25,7 @@ type FeatureDistribution struct {
 	Note     string       `json:"note"`
 }
 
-// Универсальная структура для групп (используется везде)
+// Структура для групп
 type GroupStats struct {
 	Total           int     `json:"total"`
 	HighDefect      int     `json:"high_defect"`

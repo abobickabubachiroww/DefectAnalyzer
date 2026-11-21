@@ -4,9 +4,15 @@
 
 import * as AnalysisHandler from "./analysishandler.js";
 import * as AppHandler from "./apphandler.js";
+import * as EconomicsHandler from "./economicshandler.js";
+import * as PredictHandler from "./predicthandler.js";
+import * as RecommendationsHandler from "./recommendationshandler.js";
 import * as StatsHandler from "./statshandler.js";
 export {
     AnalysisHandler,
     AppHandler,
+    EconomicsHandler,
+    PredictHandler,
+    RecommendationsHandler,
     StatsHandler
 };

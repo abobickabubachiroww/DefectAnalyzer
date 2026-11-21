@@ -16,7 +16,7 @@
 					style="--wails-draggable: no-drag"
 				/>
 				<q-toolbar-title> DefectAnalyzer </q-toolbar-title>
-				<div>DefectAnalyzer v0.1</div>
+				<div>DefectAnalyzer v0.8</div>
 			</q-toolbar>
 		</q-header>
 
@@ -38,7 +38,7 @@
 					<q-item-section avatar
 						><q-icon name="batch_prediction"
 					/></q-item-section>
-					<q-item-section>Прогноз партии</q-item-section>
+					<q-item-section>Контроль брака</q-item-section>
 				</q-item>
 
 				<q-item clickable to="/recomendations" class="nav-item">
