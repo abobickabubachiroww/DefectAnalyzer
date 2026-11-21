@@ -2,7 +2,8 @@
 	<q-page class="row bg-grey-2">
 		<q-scroll-area class="col" style="overflow-x: hidden">
 			<div class="q-px-lg q-pb-lg q-pt-md">
-				<div class="text-h5 q-mb-lg text-weight-bold text-dark">
+				<!-- Заголовок страницы -->
+				<div class="text-h6 q-mb-lg text-weight-bold text-grey-9">
 					Экономическая эффективность
 				</div>
 
@@ -32,6 +33,7 @@
 										dense
 										suffix="ч"
 									/>
+
 									<q-input
 										v-model.number="form.cost_per_downtime_hour"
 										type="number"
@@ -40,6 +42,7 @@
 										dense
 										suffix="₽"
 									/>
+
 									<q-input
 										v-model.number="form.expected_reduction_percent"
 										type="number"
@@ -59,6 +62,7 @@
 										dense
 										suffix="₽"
 									/>
+
 									<q-input
 										v-model.number="form.monthly_operating_cost"
 										type="number"
@@ -68,6 +72,7 @@
 										suffix="₽"
 									/>
 
+									<!-- Кнопка расчёта -->
 									<div class="q-mt-lg">
 										<q-btn
 											label="Рассчитать эффективность"
@@ -87,6 +92,7 @@
 
 					<!-- ПРАВАЯ КОЛОНКА: Результаты -->
 					<div class="col-12 col-md-7">
+						<!-- Состояние до расчёта -->
 						<div
 							v-if="!result && !isCalculating"
 							class="flex flex-center text-grey-5"
@@ -104,6 +110,7 @@
 							</div>
 						</div>
 
+						<!-- Состояние загрузки -->
 						<div
 							v-if="isCalculating"
 							class="flex flex-center"
@@ -112,6 +119,7 @@
 							<q-spinner-dots color="primary" size="4em" />
 						</div>
 
+						<!-- Результаты расчёта -->
 						<div v-if="result" class="column q-gutter-y-md">
 							<!-- Главная карточка: Окупаемость -->
 							<q-card
@@ -132,7 +140,9 @@
 										size="40px"
 										class="q-mb-sm opacity-80"
 									/>
+
 									<div class="text-subtitle1 opacity-80">Срок окупаемости</div>
+
 									<div class="text-h1 text-weight-bolder">
 										{{
 											result.payback_months > 0 ? result.payback_months : '∞'
@@ -153,6 +163,7 @@
 											<div class="text-caption text-grey-7">
 												Экономия в месяц (чистая)
 											</div>
+
 											<div
 												class="text-h4 text-positive text-weight-bold q-mt-xs"
 											>
@@ -161,6 +172,7 @@
 										</q-card-section>
 									</q-card>
 								</div>
+
 								<div class="col-12 col-sm-6">
 									<q-card
 										class="bg-white"
@@ -170,6 +182,7 @@
 											<div class="text-caption text-grey-7">
 												Прибыль за 1-й год
 											</div>
+
 											<div
 												class="text-h4"
 												:class="
@@ -201,12 +214,14 @@
 											{{ formatMoney(result.gross_monthly_savings) }}
 										</div>
 									</div>
+
 									<div class="row justify-between q-py-xs border-bottom">
 										<div class="text-grey-7">Операционные расходы:</div>
 										<div class="text-weight-medium text-negative">
 											- {{ formatMoney(form.monthly_operating_cost) }}
 										</div>
 									</div>
+
 									<div class="row justify-between q-py-sm">
 										<div class="text-weight-bold text-grey-9">
 											Чистая экономия в месяц:
@@ -226,6 +241,7 @@
 								<template v-slot:avatar>
 									<q-icon name="warning" color="orange-8" />
 								</template>
+
 								<div class="text-body2" style="line-height: 1.4">
 									{{ result.note }}
 								</div>
@@ -233,6 +249,9 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Нижний отступ -->
+				<div style="height: 30px"></div>
 			</div>
 		</q-scroll-area>
 	</q-page>
@@ -258,7 +277,6 @@ const onCalculate = async () => {
 	isCalculating.value = true
 	result.value = null
 	try {
-		// Вызов Go-метода, который делает математику
 		result.value = await CalculateEconomics(form.value)
 	} catch (error) {
 		console.error('Ошибка при расчёте:', error)
@@ -267,7 +285,6 @@ const onCalculate = async () => {
 	}
 }
 
-// Форматирование денег (например, 18000 -> 18 000 ₽)
 const formatMoney = value => {
 	if (value === undefined || value === null) return '0 ₽'
 	return new Intl.NumberFormat('ru-RU', {

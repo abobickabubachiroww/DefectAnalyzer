@@ -2,7 +2,8 @@
 	<q-page class="row bg-grey-2">
 		<q-scroll-area class="col" style="overflow-x: hidden">
 			<div class="q-px-lg q-pb-lg q-pt-md">
-				<div class="text-h5 q-mb-md text-weight-bold text-dark">
+				<!-- Заголовок страницы -->
+				<div class="text-h6 q-mb-lg text-weight-bold text-grey-9">
 					Прогноз партии
 				</div>
 
@@ -29,6 +30,7 @@
 											ПРОИЗВОДСТВО
 										</div>
 									</div>
+
 									<div class="col-12 col-sm-4">
 										<q-input
 											v-model.number="form.ProductionVolume"
@@ -63,6 +65,7 @@
 											ПОСТАВКИ
 										</div>
 									</div>
+
 									<div class="col-12 col-sm-4">
 										<q-input
 											v-model.number="form.SupplierQuality"
@@ -100,12 +103,13 @@
 										/>
 									</div>
 
-									<!-- Обслуживание и Ресурсы -->
+									<!-- Обслуживание и ресурсы -->
 									<div class="col-12 q-mt-md">
 										<div class="text-caption text-grey-6 text-weight-bold">
 											ОБСЛУЖИВАНИЕ И РЕСУРСЫ
 										</div>
 									</div>
+
 									<div class="col-12 col-sm-4">
 										<q-input
 											v-model.number="form.MaintenanceHours"
@@ -158,6 +162,7 @@
 											АДДИТИВНЫЕ ПРОЦЕССЫ
 										</div>
 									</div>
+
 									<div class="col-12 col-sm-4">
 										<q-input
 											v-model.number="form.AdditiveProcessTime"
@@ -177,6 +182,7 @@
 										/>
 									</div>
 
+									<!-- Кнопка прогноза -->
 									<div class="col-12 q-mt-lg flex justify-end">
 										<q-btn
 											label="Сделать прогноз"
@@ -196,6 +202,7 @@
 
 					<!-- ПРАВАЯ КОЛОНКА: Результат -->
 					<div class="col-12 col-md-4">
+						<!-- Состояние до получения прогноза -->
 						<div
 							v-if="!result"
 							class="flex flex-center text-grey-5"
@@ -208,10 +215,14 @@
 						>
 							<div class="text-center">
 								<q-icon name="batch_prediction" size="48px" class="q-mb-sm" />
-								<div>Заполните данные и нажмите<br />«Сделать прогноз»</div>
+								<div>
+									Заполните данные и нажмите<br />
+									«Сделать прогноз»
+								</div>
 							</div>
 						</div>
 
+						<!-- Карточка результата -->
 						<q-card
 							v-else
 							style="
@@ -234,7 +245,9 @@
 									size="48px"
 									class="q-mb-sm"
 								/>
-								<div class="text-h5 text-weight-bold">{{ result.label }}</div>
+								<div class="text-h5 text-weight-bold">
+									{{ result.label }}
+								</div>
 								<div class="text-subtitle2 q-mt-sm opacity-80">
 									Модель: {{ result.model }}
 								</div>
@@ -291,6 +304,9 @@
 						</q-card>
 					</div>
 				</div>
+
+				<!-- Нижний отступ -->
+				<div style="height: 30px"></div>
 			</div>
 		</q-scroll-area>
 	</q-page>
@@ -325,7 +341,6 @@ const onPredict = async () => {
 	isPredicting.value = true
 	result.value = null
 	try {
-		// Вызов Go-метода, который делает запрос к Python
 		const response = await Predict(form.value)
 		result.value = response
 	} catch (error) {

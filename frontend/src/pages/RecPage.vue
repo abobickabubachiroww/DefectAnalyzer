@@ -2,7 +2,7 @@
 	<q-page class="row bg-grey-2">
 		<q-scroll-area class="col" style="overflow-x: hidden">
 			<div class="q-px-lg q-pb-lg q-pt-md">
-				<div class="text-h5 q-mb-lg text-weight-bold text-dark">
+				<div class="text-h6 q-mb-lg text-weight-bold text-grey-9">
 					Рекомендации по улучшению качества
 				</div>
 
@@ -14,6 +14,7 @@
 					align="left"
 				>
 					<q-tab name="general" icon="lightbulb" label="Общие рекомендации" />
+
 					<q-tab
 						name="personalized"
 						icon="person_search"
@@ -23,10 +24,12 @@
 
 				<q-tab-panels v-model="tab" animated class="bg-transparent">
 					<!-- ВКЛАДКА 1: ОБЩИЕ РЕКОМЕНДАЦИИ -->
+
 					<q-tab-panel name="general" class="q-pa-none">
 						<div v-if="isLoadingGeneral" class="flex flex-center q-pa-xl">
 							<q-spinner-dots color="primary" size="3em" />
 						</div>
+
 						<div v-else-if="generalRecs" class="row q-col-gutter-lg">
 							<div
 								class="col-12"
@@ -36,6 +39,7 @@
 								<q-card
 									style="
 										border-radius: 16px;
+
 										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 									"
 								>
@@ -46,21 +50,25 @@
 											color="primary"
 											class="q-mr-md"
 										/>
+
 										<div>
 											<div class="text-h6 text-weight-bold text-grey-9">
 												{{ rec.title }}
 											</div>
+
 											<div class="text-body2 text-grey-7 q-mt-xs">
 												{{ rec.basis }}
 											</div>
 										</div>
 									</q-card-section>
+
 									<q-card-section>
 										<div
 											class="text-caption text-grey-6 text-weight-bold q-mb-sm text-uppercase"
 										>
 											Рекомендуемые действия:
 										</div>
+
 										<q-list dense>
 											<q-item
 												v-for="(action, idx) in rec.actions"
@@ -74,6 +82,7 @@
 														size="sm"
 													/>
 												</q-item-section>
+
 												<q-item-section class="text-body2 text-grey-8">{{
 													action
 												}}</q-item-section>
@@ -82,12 +91,14 @@
 									</q-card-section>
 								</q-card>
 							</div>
+
 							<div class="col-12">
 								<q-banner
 									class="bg-grey-3 text-grey-8 q-mt-md"
-									style="border-radius: 8px"
+									style="border-radius: 16px"
 								>
 									<template v-slot:avatar><q-icon name="info" /></template>
+
 									{{ generalRecs.disclaimer }}
 								</q-banner>
 							</div>
@@ -95,13 +106,16 @@
 					</q-tab-panel>
 
 					<!-- ВКЛАДКА 2: ПЕРСОНАЛЬНЫЕ РЕКОМЕНДАЦИИ -->
+
 					<q-tab-panel name="personalized" class="q-pa-none">
 						<div class="row q-col-gutter-lg">
 							<!-- Форма ввода -->
+
 							<div class="col-12 col-md-5">
 								<q-card
 									style="
 										border-radius: 16px;
+
 										box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 									"
 								>
@@ -111,8 +125,10 @@
 										>
 											Параметры партии
 										</div>
+
 										<q-form @submit="onPersonalize" class="row q-col-gutter-sm">
 											<!-- Упрощенная форма для компактности -->
+
 											<div class="col-6">
 												<q-input
 													v-model.number="form.ProductionVolume"
@@ -122,6 +138,7 @@
 													dense
 												/>
 											</div>
+
 											<div class="col-6">
 												<q-input
 													v-model.number="form.MaintenanceHours"
@@ -131,6 +148,7 @@
 													dense
 												/>
 											</div>
+
 											<div class="col-6">
 												<q-input
 													v-model.number="form.SupplierQuality"
@@ -140,6 +158,7 @@
 													dense
 												/>
 											</div>
+
 											<div class="col-6">
 												<q-input
 													v-model.number="form.ProductionCost"
@@ -149,7 +168,7 @@
 													dense
 												/>
 											</div>
-											<!-- Остальные поля можно скрыть в expansion-item для чистоты -->
+
 											<q-expansion-item
 												label="Дополнительные параметры"
 												class="col-12 q-mt-sm"
@@ -165,6 +184,7 @@
 															dense
 														/>
 													</div>
+
 													<div class="col-6">
 														<q-input
 															v-model.number="form.DowntimePercentage"
@@ -174,6 +194,7 @@
 															dense
 														/>
 													</div>
+
 													<div class="col-6">
 														<q-input
 															v-model.number="form.WorkerProductivity"
@@ -183,6 +204,7 @@
 															dense
 														/>
 													</div>
+
 													<div class="col-6">
 														<q-input
 															v-model.number="form.EnergyEfficiency"
@@ -202,7 +224,7 @@
 													type="submit"
 													:loading="isLoadingPersonal"
 													class="full-width"
-													style="border-radius: 8px"
+													style="border-radius: 16px"
 												/>
 											</div>
 										</q-form>
@@ -211,19 +233,24 @@
 							</div>
 
 							<!-- Результаты SHAP -->
+
 							<div class="col-12 col-md-7">
 								<div
 									v-if="!personalRecs && !isLoadingPersonal"
 									class="flex flex-center text-grey-5"
 									style="
 										height: 100%;
+
 										min-height: 300px;
+
 										border: 2px dashed #ccc;
+
 										border-radius: 16px;
 									"
 								>
 									<div class="text-center">
 										<q-icon name="psychology" size="48px" class="q-mb-sm" />
+
 										<div>
 											Введите данные партии, чтобы ИИ<br />проанализировал
 											факторы риска
@@ -241,6 +268,7 @@
 
 								<div v-if="personalRecs" class="column q-gutter-y-md">
 									<!-- Баннер с итогом -->
+
 									<q-card
 										:class="
 											personalRecs.predicted_class === 1
@@ -248,7 +276,7 @@
 												: 'bg-positive'
 										"
 										class="text-white"
-										style="border-radius: 12px"
+										style="border-radius: 16px"
 									>
 										<q-card-section class="row items-center">
 											<q-icon
@@ -260,12 +288,15 @@
 												size="32px"
 												class="q-mr-md"
 											/>
+
 											<div>
 												<div class="text-h6 text-weight-bold">
 													{{ personalRecs.label }}
 												</div>
+
 												<div class="text-caption opacity-80">
 													Оценка модели:
+
 													{{ (personalRecs.score * 100).toFixed(1) }}%
 												</div>
 											</div>
@@ -273,11 +304,13 @@
 									</q-card>
 
 									<!-- Карточки факторов -->
+
 									<q-card
 										v-for="(rec, idx) in personalRecs.recommendations"
 										:key="idx"
 										style="
-											border-radius: 12px;
+											border-radius: 16px;
+
 											box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 										"
 									>
@@ -288,7 +321,9 @@
 												>
 													{{ rec.title }}
 												</div>
+
 												<!-- Бейдж приоритета -->
+
 												<q-chip
 													:color="
 														rec.priority === 'high'
@@ -315,18 +350,22 @@
 											</div>
 
 											<!-- Влияние SHAP -->
+
 											<div
 												class="bg-grey-2 q-pa-sm flex items-center q-mb-md"
-												style="border-radius: 8px"
+												style="border-radius: 16px"
 											>
 												<q-icon
 													name="insights"
 													color="primary"
 													class="q-mr-sm"
 												/>
+
 												<div class="text-caption text-grey-8">
 													Признак <b>{{ rec.feature }}</b> (значение:
+
 													{{ rec.value }}) повышает риск на
+
 													<b>{{ (rec.shap_value * 100).toFixed(1) }}%</b>
 												</div>
 											</div>
@@ -344,6 +383,7 @@
 															size="sm"
 														/>
 													</q-item-section>
+
 													<q-item-section class="text-body2 text-grey-8">{{
 														action
 													}}</q-item-section>
@@ -356,6 +396,8 @@
 						</div>
 					</q-tab-panel>
 				</q-tab-panels>
+
+				<div style="height: 30px"></div>
 			</div>
 		</q-scroll-area>
 	</q-page>
@@ -363,6 +405,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+
 import {
 	GetGeneralRecommendations,
 	GetPersonalizedRecommendations,
@@ -371,25 +414,42 @@ import {
 const tab = ref('general')
 
 // Состояния
+
 const generalRecs = ref(null)
+
 const personalRecs = ref(null)
+
 const isLoadingGeneral = ref(true)
+
 const isLoadingPersonal = ref(false)
 
 const form = ref({
 	ProductionVolume: 850,
+
 	ProductionCost: 12000,
+
 	SupplierQuality: 85,
+
 	DeliveryDelay: 3,
+
 	MaintenanceHours: 12,
+
 	DowntimePercentage: 8,
+
 	InventoryTurnover: 5,
+
 	StockoutRate: 0.05,
+
 	WorkerProductivity: 80,
+
 	SafetyIncidents: 1,
+
 	EnergyConsumption: 1500,
+
 	EnergyEfficiency: 0.8,
+
 	AdditiveProcessTime: 4,
+
 	AdditiveMaterialCost: 200,
 })
 
@@ -405,7 +465,9 @@ onMounted(async () => {
 
 const onPersonalize = async () => {
 	isLoadingPersonal.value = true
+
 	personalRecs.value = null
+
 	try {
 		personalRecs.value = await GetPersonalizedRecommendations(form.value)
 	} catch (error) {
