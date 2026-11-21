@@ -1,8 +1,20 @@
 <template>
-	<q-layout view="lHh Lpr lFf">
-		<q-header elevated class="bg-primary text-white">
+	<q-layout view="hHh Lpr lFf">
+		>
+		<q-header
+			elevated
+			class="bg-primary text-white"
+			style="--wails-draggable: drag"
+		>
 			<q-toolbar>
-				<q-btn flat dense round icon="menu" @click="toggleLeftDrawer" />
+				<q-btn
+					flat
+					dense
+					round
+					icon="menu"
+					@click="toggleLeftDrawer"
+					style="--wails-draggable: no-drag"
+				/>
 				<q-toolbar-title> DefectAnalyzer </q-toolbar-title>
 				<div>DefectAnalyzer v0.1</div>
 			</q-toolbar>
@@ -43,7 +55,7 @@
 			</q-list>
 		</q-drawer>
 
-		<q-page-container>
+		<q-page-container class="bg-grey-2">
 			<router-view />
 		</q-page-container>
 	</q-layout>

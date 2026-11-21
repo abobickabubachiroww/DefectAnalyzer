@@ -1,3 +1,14 @@
+html,
+body,
+#app {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	overflow-x: hidden;
+}
+
 :root {
 	--q-font-family:
 		'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
@@ -38,12 +49,10 @@ h6,
 
 body {
 	margin: 0;
-	overflow: hidden;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-user-select: none;
 	user-select: none;
-	--wails-draggable: drag;
 	color: hsl(0, 0%, 100%);
 	background-color: #121212;
 }
@@ -74,4 +83,72 @@ h6,
 .q-table {
 	-webkit-user-select: text;
 	user-select: text;
+}
+
+.opacity-80 {
+	opacity: 0.8;
+}
+
+.chart {
+	height: 300px;
+	width: 100%;
+	min-height: 300px;
+}
+
+.chart-large {
+	height: 400px;
+	width: 100%;
+	min-height: 400px;
+}
+
+.confusion-matrix {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 12px;
+	width: 100%;
+	max-width: 260px;
+	margin: 0 auto;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.confusion-matrix > * {
+	box-sizing: border-box;
+}
+
+.cm-cell {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 12px;
+	padding: 24px 10px; /* Сделали ячейки крупнее */
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	cursor: pointer;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
+}
+
+.cm-cell:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+button,
+a,
+input,
+textarea,
+select,
+.q-btn,
+.q-item,
+.q-field,
+.q-checkbox,
+.q-toggle,
+.q-table,
+.q-page-container,
+.q-page {
+	--wails-draggable: no-drag;
 }

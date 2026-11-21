@@ -1,16 +1,25 @@
 package main
 
 import (
-	"DefectAnalyzer/desktop/handlers"
+	"DefectAnalyzer/desktop/core/handlers"
+	"DefectAnalyzer/desktop/core/usecases"
 	"embed"
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
+//go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
+	// Инициализация Stats (Главная)
+	statsUseCase := usecases.NewStatsUseCase()
+	statsHandler := handlers.NewStatsHandler(statsUseCase)
+
+	// Инициализация Analysis (Анализ)
+	analysisUseCase := usecases.NewAnalysisUseCase()
+	analysisHandler := handlers.NewAnalysisHandler(analysisUseCase)
 
 	appHandler := &handlers.AppHandler{}
 
@@ -19,6 +28,8 @@ func main() {
 		Description: "Система анализа брака",
 		Services: []application.Service{
 			application.NewService(appHandler),
+			application.NewService(statsHandler),    // Регистрируем первый
+			application.NewService(analysisHandler), // Регистрируем второй
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -35,8 +46,7 @@ func main() {
 		StartState: application.WindowStateMaximised,
 	})
 
-	err := app.Run()
-	if err != nil {
+	if err := app.Run(); err != nil {
 		log.Fatal(err)
 	}
 }
