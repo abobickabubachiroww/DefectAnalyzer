@@ -1,0 +1,77 @@
+:root {
+	--q-font-family:
+		'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-h5,
+.text-h6,
+.text-body1,
+.text-body2,
+.text-subtitle1,
+.text-subtitle2,
+.q-btn__content,
+.q-item__label,
+.q-field__label,
+.q-field__native,
+.q-table th,
+.q-table td,
+.q-toolbar__title {
+	font-family:
+		'Open Sans',
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		sans-serif !important;
+}
+
+body {
+	margin: 0;
+	overflow: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-user-select: none;
+	user-select: none;
+	--wails-draggable: drag;
+	color: hsl(0, 0%, 100%);
+	background-color: #121212;
+}
+
+button,
+a,
+input,
+textarea,
+select,
+.q-btn,
+.q-item,
+.q-field,
+.q-checkbox,
+.q-toggle,
+.q-table {
+	--wails-draggable: no-drag;
+}
+
+input,
+textarea,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.q-table {
+	-webkit-user-select: text;
+	user-select: text;
+}
